@@ -1,0 +1,32 @@
+{
+  "name": "plumbing-pro",
+  "version": "1.0.0",
+  "private": true,
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
+  "scripts": {
+    "dev": "turbo run dev",
+    "build": "turbo run build",
+    "lint": "turbo run lint",
+    "test": "turbo run test",
+    "db:generate": "npm run --workspace=apps/api prisma:generate",
+    "db:migrate": "npm run --workspace=apps/api prisma:migrate",
+    "db:seed": "npm run --workspace=apps/api prisma:seed",
+    "docker:up": "docker compose -f docker/docker-compose.yml up -d",
+    "docker:down": "docker compose -f docker/docker-compose.yml down",
+    "docker:prod": "docker compose -f docker/docker-compose.prod.yml up -d",
+    "clean": "turbo run clean && rimraf node_modules"
+  },
+  "devDependencies": {
+    "turbo": "^2.5.0",
+    "rimraf": "^6.0.1",
+    "typescript": "^5.7.3"
+  },
+  "engines": {
+    "node": ">=20.0.0",
+    "npm": ">=10.0.0"
+  },
+  "packageManager": "npm@10.9.2"
+}

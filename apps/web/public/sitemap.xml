@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url><loc>https://proplumb.com/</loc><changefreq>weekly</changefreq><priority>1.0</priority></url>
+  <url><loc>https://proplumb.com/services</loc><changefreq>monthly</changefreq><priority>0.9</priority></url>
+  <url><loc>https://proplumb.com/services/emergency-plumbing</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://proplumb.com/services/drain-cleaning</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://proplumb.com/services/water-heater-repair</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://proplumb.com/services/leak-detection</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://proplumb.com/services/sewer-line-repair</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://proplumb.com/services/pipe-replacement</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://proplumb.com/services/commercial-plumbing</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://proplumb.com/testimonials</loc><changefreq>weekly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://proplumb.com/blog</loc><changefreq>weekly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://proplumb.com/contact</loc><changefreq>monthly</changefreq><priority>0.9</priority></url>
+  <url><loc>https://proplumb.com/emergency</loc><changefreq>monthly</changefreq><priority>0.9</priority></url>
+  <url><loc>https://proplumb.com/service-areas</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+</urlset>

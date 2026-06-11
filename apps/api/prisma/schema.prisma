@@ -1,0 +1,179 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = "file:./dev.db"
+}
+
+// ─── Enums (stored as String in SQLite) ──────────────────────────────────────
+
+// Role: ADMIN | SUPER_ADMIN
+// AppointmentStatus: PENDING | CONFIRMED | IN_PROGRESS | COMPLETED | CANCELLED
+// QuoteStatus: NEW | REVIEWING | REVIEWED | QUOTED | ACCEPTED | REJECTED | COMPLETED
+// RequestStatus: OPEN | ASSIGNED | RESOLVED | CLOSED
+// ServiceType: EMERGENCY | DRAIN_CLEANING | WATER_HEATER | LEAK_DETECTION |
+//              TOILET_REPAIR | SEWER_LINE | PIPE_REPLACEMENT | COMMERCIAL | OTHER
+
+model User {
+  id            String         @id @default(uuid())
+  email         String         @unique
+  passwordHash  String
+  role          String         @default("ADMIN")
+  refreshTokens RefreshToken[]
+  createdAt     DateTime       @default(now())
+  updatedAt     DateTime       @updatedAt
+  deletedAt     DateTime?
+
+  @@map("users")
+}
+
+model RefreshToken {
+  id        String   @id @default(uuid())
+  tokenHash String
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  expiresAt DateTime
+  createdAt DateTime @default(now())
+
+  @@index([userId])
+  @@index([tokenHash])
+  @@map("refresh_tokens")
+}
+
+model Customer {
+  id           String        @id @default(uuid())
+  name         String
+  email        String        @unique
+  phone        String
+  address      String?
+  notes        String?
+  appointments Appointment[]
+  quotes       Quote[]
+  createdAt    DateTime      @default(now())
+
+  @@index([email])
+  @@map("customers")
+}
+
+model Appointment {
+  id             String   @id @default(uuid())
+  customerId     String
+  customer       Customer @relation(fields: [customerId], references: [id], onDelete: Cascade)
+  serviceType    String   // ServiceType enum value
+  scheduledAt    DateTime
+  status         String   @default("PENDING") // AppointmentStatus enum value
+  technicianNote String?
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+
+  @@index([customerId])
+  @@index([scheduledAt])
+  @@index([status])
+  @@map("appointments")
+}
+
+model Quote {
+  id            String   @id @default(uuid())
+  customerId    String
+  customer      Customer @relation(fields: [customerId], references: [id], onDelete: Cascade)
+  serviceType   String   // ServiceType enum value
+  description   String
+  address       String
+  preferredDate DateTime?
+  status        String   @default("NEW") // QuoteStatus enum value
+  estimatedCost Float?
+  attachments   String   @default("[]") // JSON array stored as string
+  createdAt     DateTime @default(now())
+
+  @@index([customerId])
+  @@index([status])
+  @@map("quotes")
+}
+
+model ServiceRequest {
+  id          String   @id @default(uuid())
+  name        String
+  phone       String
+  address     String
+  issueType   String
+  isEmergency Boolean  @default(false)
+  status      String   @default("OPEN") // RequestStatus enum value
+  createdAt   DateTime @default(now())
+
+  @@index([status])
+  @@index([isEmergency])
+  @@map("service_requests")
+}
+
+model Testimonial {
+  id           String   @id @default(uuid())
+  customerName String
+  avatarUrl    String?
+  rating       Int
+  review       String
+  serviceType  String?
+  isApproved   Boolean  @default(false)
+  isPublished  Boolean  @default(false)
+  source       String?
+  createdAt    DateTime @default(now())
+
+  @@index([isPublished])
+  @@map("testimonials")
+}
+
+model BlogPost {
+  id             String    @id @default(uuid())
+  title          String
+  slug           String    @unique
+  excerpt        String
+  content        String
+  coverImageUrl  String?
+  category       String
+  authorId       String
+  tags           String    @default("[]") // JSON array stored as string
+  readTimeMin    Int
+  isPublished    Boolean   @default(false)
+  publishedAt    DateTime?
+  seoTitle       String?
+  seoDescription String?
+  createdAt      DateTime  @default(now())
+  updatedAt      DateTime  @updatedAt
+
+  @@index([slug])
+  @@index([category])
+  @@index([isPublished])
+  @@index([publishedAt])
+  @@map("blog_posts")
+}
+
+model ContactMessage {
+  id        String   @id @default(uuid())
+  name      String
+  email     String
+  phone     String?
+  message   String
+  isRead    Boolean  @default(false)
+  createdAt DateTime @default(now())
+
+  @@index([isRead])
+  @@map("contact_messages")
+}
+
+model AuditLog {
+  id        String   @id @default(uuid())
+  userId    String?
+  action    String
+  entity    String
+  entityId  String?
+  metadata  String?  // JSON stored as string
+  ipAddress String?
+  userAgent String?
+  createdAt DateTime @default(now())
+
+  @@index([userId])
+  @@index([entity])
+  @@index([createdAt])
+  @@map("audit_logs")
+}
